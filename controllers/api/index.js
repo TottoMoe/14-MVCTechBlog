@@ -21,4 +21,9 @@ router.get('/post', async (req, res) => {
 
 router.use('/comment', commentRoutes);
 
+router.get('/comment', async (req, res) => {
+  const comment = await Comment.findAll();
+  res.json(comment);
+});
+
 module.exports = router;
