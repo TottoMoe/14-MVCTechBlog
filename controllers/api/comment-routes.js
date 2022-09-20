@@ -1,8 +1,8 @@
-const route = require("express").Router();
+const router = require("express").Router();
 const { Comment } = require("../../models");
 const withAuth = require("../../utils/auth");
 
-route.post("/", withAuth, async (req, res) => {
+router.post("/", withAuth, async (req, res) => {
   try {
     const newComment = await Comment.create({
       ...req.body,
@@ -14,4 +14,4 @@ route.post("/", withAuth, async (req, res) => {
   }
 });
 
-module.exports = route;
+module.exports = router;
