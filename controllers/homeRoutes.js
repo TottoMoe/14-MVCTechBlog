@@ -1,62 +1,63 @@
-const router = require('express').Router();
-const { Post, User, Comment } = require('../models');
-const withAuth = require('../utils/auth');
+const router = require("express").Router();
+const { Post, User, Comment } = require("../models");
+const withAuth = require("../utils/auth");
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     // Get all posts and JOIN with user data
     const postData = await Post.findAll({
-      attributes: { exclude: ['user_id', 'updatedAt']},
+      attributes: { exclude: ["user_id", "updatedAt"] },
       include: [
-        { 
-          module: User, 
-          attributes: { exclude: ['password', 'createdAt'] }
+        {
+          module: User,
+          attributes: { exclude: ["password", "createdAt"] },
         },
         { module: Comment },
       ],
     });
 
     // Serialize data so the template can read it
-    const posts = postData.map(post => post.get({ plain: true }));
-
+    const posts = postData.map((post) => post.get({ plain: true }));
+    console.log("here");
     // Pass serialized data and session flag into template
-    res.render('homepage', {  //<<!!{{}}
-      posts, 
-      logged_in: req.session.logged_in 
+    res.render("homepage", {
+      //<<!!{{}}
+      posts,
+      logged_in: req.session.logged_in,
     });
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-router.get('/post/:id', async (req, res) => {
+router.get("/post/:id", async (req, res) => {
   try {
     const postData = await Post.findByPk(req.params.id, {
-      attributes: { exclude: ['user_id', 'updatedAt']},
+      attributes: { exclude: ["user_id", "updatedAt"] },
       include: [
-        { 
-          module: User, 
-          attributes: { exclude: ['password', 'createdAt'] }
+        {
+          module: User,
+          attributes: { exclude: ["password", "createdAt"] },
         },
         {
           module: Comment,
           include: {
             module: User,
-            attributes: { exclude: ['password'] }
-          }
+            attributes: { exclude: ["password"] },
+          },
         },
       ],
     });
 
     if (postData) {
       const post = postData.get({ plain: true });
-  
-      res.render('post', {
+
+      res.render("post", {
         ...post,
-        logged_in: req.session.logged_in
+        logged_in: req.session.logged_in,
       });
     } else {
-       res.status(404).end();
+      res.status(404).end();
     }
   } catch (err) {
     res.status(500).json(err);
@@ -83,24 +84,24 @@ router.get('/post/:id', async (req, res) => {
 //   }
 // });
 
-router.get('/login', (req, res) => {
+router.get("/login", (req, res) => {
   // If the user is already logged in, redirect the request to another route
   if (req.session.logged_in) {
-    res.redirect('/');
+    res.redirect("/");
     return;
   }
 
-  res.render('login');
+  res.render("login");
 });
 
-router.get('/signup', (req, res) => {
+router.get("/signup", (req, res) => {
   // If the user doesn't have account, redirect to the sign up date
   if (req.session.logged_in) {
-    res.redirect('/');
+    res.redirect("/");
     return;
   }
 
-  res.render('signup');
+  res.render("signup");
 });
 
 module.exports = router;
