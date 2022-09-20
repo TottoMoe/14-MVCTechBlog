@@ -1,41 +1,17 @@
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Tech Blog</title>
-    <link rel="stylesheet" href="/css/style.css" />
-  </head>
-
-  <body>
-    <div class="flex-column min-100-vh">
-      <nav class="navbar">
-        <ul class="flex-row">
-          <li class="li-inline nav-item"><a href="/">Home</a></li>
-          <li class="li-inline nav-item"><a href="/dashboard">Dashboard</a></li>
-          <li class="li-inline nav-item"><a
-              href="#"
-              id="logout-link"
-            >Logout</a></li>
-        </ul>
-      </nav>
-      <header class="techBlog">
-        <h1 class="app-title"><a href="/dashboard">Your Dashboard</a></h1>
-      </header>
-
-      <main class="container container-fluid mt-5">
-        <!-- Render the sub layout -->
-        {{{body}}}
-      </main>
-      <footer class="footer flex-row justify-center">
-        <a href="/dashboard/new-post">New Post</a>
-      </footer>
+{{#if post.length}}
+  <section class="card">
+    <div class="card-header">Your Posts</div>
+    <div class="post-body">
+      <ul class="post-list">
+        {{#each post}}
+          <a href="/dashboard/edit/{{id}}">
+            <li class="post-list-item">
+              <div>{{title}}</div>
+              <div>{{format_date date_created}}</div>
+            </li>
+          </a>
+        {{/each}}
+      </ul>
     </div>
-
-    <!-- Render script for logged in users only -->
-    {{#if logged_in}}
-      <script src="/js/logout.js"></script>
-    {{/if}}
-  </body>
-
-</html>
+  </section>
+{{/if}}
