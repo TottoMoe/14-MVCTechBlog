@@ -3,16 +3,14 @@ const commentFormHandler = async (event) => {
 
   const commentEl = document.querySelector("#comment-body").value.trim();
 
-  const post_id = window.location.toString().split("/")[
-    window.location.toString().split("/").length - 1
-  ];
+  const postId = document.getElementById("post-id").dataset.postId;
 
   if (commentEl) {
     const response = await fetch("/api/comment", {
       method: "POST",
       body: JSON.stringify({
-        post_id,
-        commentEl,
+        post_id: postId,
+        comment: commentEl,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -28,6 +26,7 @@ const commentFormHandler = async (event) => {
   }
 };
 
-document
-  .querySelector("#new-comment")
-  .addEventListener("submit", commentFormHandler);
+const commentBtn = document.querySelector("#new-comment");
+if (commentBtn) {
+  commentBtn.addEventListener("submit", commentFormHandler);
+}
