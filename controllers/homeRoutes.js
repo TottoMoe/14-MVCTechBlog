@@ -7,25 +7,20 @@ router.get("/", async (req, res) => {
     // Get all posts and JOIN with user data
     const postData = await Post.findAll({
       attributes: { exclude: ["user_id", "updatedAt"] },
-      include: [
-        {
-          module: User,
-          attributes: { exclude: ["password", "createdAt"] },
-        },
-        { module: Comment },
-      ],
+      include: [User],
     });
 
     // Serialize data so the template can read it
     const posts = postData.map((post) => post.get({ plain: true }));
     console.log("here");
     // Pass serialized data and session flag into template
-    res.render("homepage", {
+    res.render("all-post", {
       //<<!!{{}}
       posts,
       logged_in: req.session.logged_in,
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });
@@ -34,19 +29,7 @@ router.get("/post/:id", async (req, res) => {
   try {
     const postData = await Post.findByPk(req.params.id, {
       attributes: { exclude: ["user_id", "updatedAt"] },
-      include: [
-        {
-          module: User,
-          attributes: { exclude: ["password", "createdAt"] },
-        },
-        {
-          module: Comment,
-          include: {
-            module: User,
-            attributes: { exclude: ["password"] },
-          },
-        },
-      ],
+      include: [User],
     });
 
     if (postData) {
