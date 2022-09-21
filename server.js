@@ -7,7 +7,7 @@ const helpers = require("./utils/helpers");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-const sequelize = require("./config/connection");
+const sequelize = require("./config/config");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
 // Set up Handlebars.js engine with custom helpers
@@ -39,11 +39,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(require("./controllers."));
+app.use(require("./controllers/"));
 
-app.listen(
-  (PORT = () => {
-    console.log(`App listening on port http://localhost${PORT}!`);
-    sequelize.sync({ force: false });
-  })
-);
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}!`);
+  sequelize.sync({ force: false });
+});
