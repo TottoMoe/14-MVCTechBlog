@@ -1,18 +1,20 @@
-const router = require('express').Router();
-const { User } = require('../../models');
+const router = require("express").Router();
+const { User } = require("../../models");
 
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const existingUser = await User.findOne({
       where: {
-        username: req.body.username
-      }
+        username: req.body.username,
+      },
     });
 
     if (existingUser) {
-      res.status(500).json({ message: 'username already taken' });
+      console.log("This username is alerady taken");
+      res.status(500).json({ message: "username already taken" });
       return;
     }
+
     const newUser = await User.create({
       username: req.body.username,
       password: req.body.password,
@@ -23,47 +25,45 @@ router.post('/', async (req, res) => {
       req.session.username = newUser.username;
       req.session.loggedIn = true;
 
-      res.status(200).json(newUser);
+      res.json(newUser);
     });
   } catch (err) {
-    res.status(400).json(err);
+    console.log(err);
+    res.status(400).json({ message: "Invalied entries or server error" });
   }
 });
 
-router.post('/login', async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
-    const userData = await User.findOne({ where: { username: req.body.username }});
+    const user = await User.findOne({
+      where: { username: req.body.username },
+    });
 
-    if (!userData) {
-      res
-        .status(400)
-        .json({ message: 'Incorrect username, please try again' });
+    if (!user) {
+      res.status(400).json({ message: "Incorrect username, please try again" });
       return;
     }
 
-    const validPassword = await userData.checkPassword(req.body.password);
+    const validPassword = await user.checkPassword(req.body.password);
 
     if (!validPassword) {
-      res
-        .status(400)
-        .json({ message: 'Incorrect password, please try again' });
+      res.status(400).json({ message: "Incorrect password, please try again" });
       return;
     }
 
     req.session.save(() => {
-      req.session.userId = userData.id;
-      req.session.username = userData.username;
+      req.session.userId = user.id;
+      req.session.username = user.username;
       req.session.loggedIn = true;
-      
-      res.json({ user: userData, message: 'You are now logged in!' });
-    });
 
+      res.json({ user: user, message: "You are now logged in!" });
+    });
   } catch (err) {
-    res.status(400).json(err);
+    res.status(400).json({ message: "some weird error" });
   }
 });
 
-router.post('/logout', (req, res) => {
+router.post("/logout", (req, res) => {
   if (req.session.loggedIn) {
     req.session.destroy(() => {
       res.status(204).end();
