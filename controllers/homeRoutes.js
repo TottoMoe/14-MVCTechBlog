@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const { Post, User, Comment } = require("../models");
-const withAuth = require("../utils/auth");
 
 router.get("/", async (req, res) => {
   try {
@@ -12,12 +11,13 @@ router.get("/", async (req, res) => {
 
     // Serialize data so the template can read it
     const posts = postData.map((post) => post.get({ plain: true }));
-    console.log("here");
+
     // Pass serialized data and session flag into template
     res.render("all-post", {
-      //<<!!{{}}
-      posts,
-      logged_in: req.session.logged_in,
+      payload: {
+        posts,
+        session: req.session,
+      },
     });
   } catch (err) {
     console.log(err);
@@ -35,9 +35,8 @@ router.get("/post/:id", async (req, res) => {
     if (postData) {
       const post = postData.get({ plain: true });
 
-      res.render("post", {
-        ...post,
-        logged_in: req.session.logged_in,
+      res.render("single-post", {
+        payload: { posts: [post], session: req.session },
       });
     } else {
       res.status(404).end();
@@ -49,7 +48,7 @@ router.get("/post/:id", async (req, res) => {
 
 router.get("/login", (req, res) => {
   // If the user is already logged in, redirect the request to another route
-  if (req.session.logged_in) {
+  if (req.session.loggedIn) {
     res.redirect("/");
     return;
   }
@@ -59,7 +58,7 @@ router.get("/login", (req, res) => {
 
 router.get("/signup", (req, res) => {
   // If the user doesn't have account, redirect to the sign up date
-  if (req.session.logged_in) {
+  if (req.session.loggedIn) {
     res.redirect("/");
     return;
   }
