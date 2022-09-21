@@ -1,24 +1,22 @@
-header, .project:not(:last-child) {
-  border-bottom: 1px solid #ccc;
+:root {
+  --primary: #ccdad1;
+  --secondary: #2e8d3c;
+  --tertiary: #686868;
+  --light-dark: #059f21;
+  --dark: #025710;
+  --border-radius: 0.3rem;
 }
 
-.no-button {
-  background: none;
-  border: none;
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--primary);
+  margin: 0;
   padding: 0;
-  cursor: pointer;
-  color: #1b89bc;
-  text-decoration: none;
-  font-size: 100%;
-}
-
-.no-button:hover {
-  color: #065b83;
-  text-decoration: underline;
-}
-
-.dollar-amount {
-  color: #056605;
-  font-weight: bold;
-  margin-left: -5px;
+  font-family: "Gill Sans", sans-serif;
+  color: var(--dark);
+  line-height: 1.5;
+  font-size: 16px;
 }
