@@ -1,24 +1,19 @@
-<div class="container">
-    <div class="col-sm-12 log-form">
-        <div class="login-text">
-            <h2 class="page-title">Login</h2>
-        </div>
-        <form id="login-form">
-            <div class="form-group">
-                <label for="name">Username:</label>
-                <input class="col-sm-12 form-input" type="text" id="username-input-login" />
-            </div>
-            </div>
-            <div class="form-group">
-                <label for="password-login">Password:</label>
-                <input class="col-sm-12 form-input" type="password" id="password-input-login" />
-            </div>
-            <div class="form-group">
-                <button class="col-sm-12 btn btn-primary" type="submit">Login</button>
-            </div>
-            <a class="nav-link text-center" href="/signup">Sign up Instead!</a>
-        </form>
+<div class="card">
+  <div class="card-header">
+    <h2>Login</h2>
+  </div>
+  <form id="login-form" class="card-body">
+    <div>
+      <label for="username-input-login">Username:</label>
+      <input type="text" id="username-input-login" />
     </div>
+    <div>
+      <label for="password-input-login" class="form-label">Password:</label>
+      <input type="password" id="password-input-login" />
+    </div>
+    <button type="submit" id="login-id" class="btn">Login</button>
+    <a type="button" href="/signup">Sign up Instead!</a>
+  </form>
 </div>
 
 <script src="./js/login.js"></script>

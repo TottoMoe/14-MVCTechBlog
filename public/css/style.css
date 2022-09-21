@@ -1,9 +1,9 @@
 :root {
   --primary: #ccdad1;
-  --secondary: #2e8d3c;
-  --tertiary: #686868;
-  --light-dark: #059f21;
-  --dark: #025710;
+  --secondary: #9caea9;
+  --tertiary: #788585;
+  --light-dark: #6f6866;
+  --dark: #38302e;
   --border-radius: 0.3rem;
 }
 
@@ -15,8 +15,20 @@ body {
   background-color: var(--primary);
   margin: 0;
   padding: 0;
-  font-family: "Gill Sans", sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   color: var(--dark);
   line-height: 1.5;
   font-size: 16px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  margin: 0;
+  color: var(--dark);
+  line-height: 1.25;
 }
