@@ -10,11 +10,11 @@ router.get("/", async (req, res) => {
 router.post("/", withAuth, async (req, res) => {
   try {
     const newPost = await Post.create({
-      title: req.session.title,
-      content: req.session.content,
+      title,
+      content,
       userID: req.session.userId,
     });
-
+    console.log("newPost here:", newPost);
     res.status(200).json(newPost);
   } catch (err) {
     res.status(400).json(err);
