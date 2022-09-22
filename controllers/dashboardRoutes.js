@@ -4,20 +4,23 @@ const withAuth = require("../utils/auth");
 
 router.get("/", withAuth, async (req, res) => {
   try {
+    console.log(req.session.userId);
     const postData = await Post.findAll({
-      attributes: { exclude: ["updatedAt", "user_id"] },
-      include: [User],
       where: {
-        user_id: req.session.userId,
+        userId: req.session.userId,
       },
+      attributes: { exclude: ["updatedAt"] },
+      include: [User],
     });
 
     const posts = postData.map((post) => post.get({ plain: true }));
 
+    console.log(posts);
+
     res.render("all-post-admin", {
       //{{}}
       layout: "dashboard",
-      payload: { posts, session: req.session },
+      posts,
     });
   } catch (err) {
     res.redirect("login");
@@ -39,7 +42,7 @@ router.get("/edit/:id", withAuth, async (req, res) => {
 
       res.render("edit-post", {
         layout: "dashboard",
-        payload: { posts: post, session: req.session },
+        post,
       });
     } else {
       res.status(404).end();

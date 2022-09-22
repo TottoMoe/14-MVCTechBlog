@@ -1,6 +1,11 @@
 const router = require("express").Router();
 const { User } = require("../../models");
 
+router.get("/", async (req, res) => {
+  const users = await User.findAll();
+  res.json(users);
+});
+
 router.post("/", async (req, res) => {
   try {
     const existingUser = await User.findOne({
@@ -21,7 +26,7 @@ router.post("/", async (req, res) => {
     });
 
     req.session.save(() => {
-      req.session.userId = newUser.id;
+      req.session.user_id = newUser.id;
       req.session.username = newUser.username;
       req.session.loggedIn = true;
 
@@ -66,7 +71,7 @@ router.post("/login", async (req, res) => {
 router.post("/logout", (req, res) => {
   if (req.session.loggedIn) {
     req.session.destroy(() => {
-      res.status(200).end();
+      res.status(204).end();
     });
   } else {
     res.status(404).end();

@@ -6,18 +6,25 @@ router.get("/", async (req, res) => {
     // Get all posts and JOIN with user data
     const postData = await Post.findAll({
       attributes: { exclude: ["user_id", "updatedAt"] },
-      include: [User],
+      include: [
+        {
+          model: User,
+          attributes: {
+            exclude: ["password"],
+          },
+        },
+      ],
     });
 
     // Serialize data so the template can read it
     const posts = postData.map((post) => post.get({ plain: true }));
 
+    console.log(posts);
+
     // Pass serialized data and session flag into template
     res.render("all-post", {
-      payload: {
-        posts,
-        session: req.session,
-      },
+      posts,
+      isLoggedOut: !req.session.loggedIn,
     });
   } catch (err) {
     console.log(err);
@@ -37,6 +44,7 @@ router.get("/post/:id", async (req, res) => {
 
       res.render("single-post", {
         payload: { posts: [post], session: req.session },
+        isLoggedOut: !req.session.loggedIn,
       });
     } else {
       res.status(404).end();
@@ -53,7 +61,9 @@ router.get("/login", (req, res) => {
     return;
   }
 
-  res.render("login");
+  res.render("login", {
+    isLoggedOut: !req.session.loggedIn,
+  });
 });
 
 router.get("/signup", (req, res) => {
@@ -63,7 +73,9 @@ router.get("/signup", (req, res) => {
     return;
   }
 
-  res.render("signup");
+  res.render("signup", {
+    isLoggedOut: !req.session.loggedIn,
+  });
 });
 
 module.exports = router;
