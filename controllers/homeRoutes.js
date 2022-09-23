@@ -33,25 +33,26 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/post/:id", async (req, res) => {
-  try {
-    const postData = await Post.findByPk(req.params.id, {
-      attributes: { exclude: ["user_id", "updatedAt"] },
-      include: [User],
+  // try {
+  console.log(req.params.id);
+  const postData = await Post.findByPk(req.params.id, {
+    attributes: { exclude: ["user_id", "updatedAt"] },
+    include: [{ model: User }],
+  });
+  console.log(postData);
+  if (postData) {
+    const post = postData.get({ plain: true });
+    console.log(post);
+    res.render("single-post", {
+      post,
+      isLoggedOut: !req.session.loggedIn,
     });
-
-    if (postData) {
-      const post = postData.get({ plain: true });
-
-      res.render("single-post", {
-        payload: { posts: [post], session: req.session },
-        isLoggedOut: !req.session.loggedIn,
-      });
-    } else {
-      res.status(404).end();
-    }
-  } catch (err) {
-    res.status(500).json(err);
+  } else {
+    res.status(404).end();
   }
+  // } catch (err) {
+  //   res.status(500).json(err);
+  // }
 });
 
 router.get("/login", (req, res) => {

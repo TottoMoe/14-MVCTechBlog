@@ -8,17 +8,17 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", withAuth, async (req, res) => {
-  try {
-    const newPost = await Post.create({
-      title,
-      content,
-      userID: req.session.userId,
-    });
-    console.log("newPost here:", newPost);
-    res.status(200).json(newPost);
-  } catch (err) {
-    res.status(400).json(err);
-  }
+  // try {
+  const newPost = await Post.create({
+    title: req.body.title,
+    content: req.body.content,
+    userID: req.session.userId,
+  });
+  console.log("newPost here:", newPost);
+  res.status(200).json(newPost);
+  // } catch (err) {
+  //   res.status(400).json(err);
+  // }
 });
 
 router.put("/:id", withAuth, async (req, res) => {
