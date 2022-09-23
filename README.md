@@ -41,9 +41,10 @@ This app will follow the MVC paradigm in its architectural structure, using Hand
 
 ## Test ScreenShot
 
-![Screen-Shot](./categoriesSS.png)
-![Screen-Shot](./productsSS.png)
-![Screen-Shot](./tagsSS.png)
+![Screen-Shot](./ScreenShot1%20.png)
+![Screen-Shot](./ScreenShot2.png)
+![Screen-Shot](./ScreenShot3.png)
+![Screen-Shot](./ScreenShot4.png)
 
 <a name="questions"></a>
 
