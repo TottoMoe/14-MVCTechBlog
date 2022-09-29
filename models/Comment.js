@@ -14,12 +14,18 @@ Comment.init(
     content: {
       type: DataTypes.STRING,
     },
+    userId: {
+      type: DataTypes.INTEGER,
+    },
+    postId: {
+      type: DataTypes.INTEGER,
+    },
   },
   {
     sequelize,
     timestamps: true,
     freezeTableName: true,
-    underscored: true,
+    underscored: false,
     modelName: "Comment",
   }
 );

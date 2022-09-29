@@ -13,9 +13,10 @@ router.get("/", withAuth, async (req, res) => {
       include: [User],
     });
 
+    console.log("postData", postData);
     const posts = postData.map((post) => post.get({ plain: true }));
 
-    console.log(posts);
+    console.log("posts", posts);
 
     res.render("all-post-admin", {
       //{{}}

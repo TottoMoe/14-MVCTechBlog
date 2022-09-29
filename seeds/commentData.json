@@ -1,12 +1,12 @@
 [
   {
     "content": "I like my homework",
-    "user_id": 2,
-    "post_id": 1
+    "userId": 2,
+    "postId": 1
   },
   {
     "content": "I'm so busy",
-    "user_id": 3,
-    "post_id": 1
+    "userId": 3,
+    "postId": 1
   }
 ]

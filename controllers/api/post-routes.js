@@ -12,7 +12,7 @@ router.post("/", withAuth, async (req, res) => {
   const newPost = await Post.create({
     title: req.body.title,
     content: req.body.content,
-    userID: req.session.userId,
+    userId: req.session.userId,
   });
   console.log("newPost here:", newPost);
   res.status(200).json(newPost);
@@ -23,12 +23,13 @@ router.post("/", withAuth, async (req, res) => {
 
 router.put("/:id", withAuth, async (req, res) => {
   try {
+    console.log("req.body", req.body);
     const postData = await Post.update(req.body, {
       where: {
         id: req.params.id,
       },
     });
-
+    console.log("postData", postData);
     if (postData) {
       res.status(200).json(postData);
     } else {
