@@ -24,12 +24,15 @@ router.post("/", withAuth, async (req, res) => {
 router.put("/:id", withAuth, async (req, res) => {
   try {
     console.log("req.body", req.body);
-    const postData = await Post.update(req.body, {
-      where: {
-        id: req.params.id,
-      },
-    });
-    console.log("postData", postData);
+    const postData = await Post.update(
+      { ...req.body },
+      {
+        where: {
+          id: req.params.id,
+        },
+      }
+    );
+    // console.log("postData", postData);
     if (postData) {
       res.status(200).json(postData);
     } else {
@@ -48,7 +51,7 @@ router.delete("/:id", withAuth, async (req, res) => {
         id: req.params.id,
       },
     });
-
+    //console.log("postData2", postData);
     if (postData) {
       res.status(200).json(postData);
     } else {
